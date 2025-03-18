@@ -4,18 +4,26 @@
  */
 package farmacia_san_antonio;
 
+import java.awt.Image;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author frix4
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+    private ImageIcon imagen;
+    private Icon icono;
     public Login() {
         initComponents();
+        this.setLocationRelativeTo(this);
+        
+        this.pintarimagen(this.logo, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\Captura de pantalla 2025-03-15 230108.png");
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,7 +41,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,17 +87,15 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("Inicio de sesión");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, 187, 34));
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Inicio de sesion.png"))); // NOI18N
-        jLabel4.setText("jLabel4");
-        jLabel4.setAutoscrolls(true);
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 470, 370));
+        logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logo.setAutoscrolls(true);
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 320, 240));
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(9, 118, 68));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Bienvenido");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 390, 260, 60));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 360, 260, 60));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,16 +157,25 @@ public class Login extends javax.swing.JFrame {
             }
         });
     }
+    private void pintarimagen(JLabel lbl, String ruta){
+    this.imagen = new ImageIcon(ruta);
+    this.icono = new ImageIcon(
+            this.imagen.getImage().getScaledInstance(
+                    lbl.getWidth(), 
+                    lbl.getHeight(), 
+                    Image.SCALE_DEFAULT));
+    lbl.setIcon(this.icono);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
 }
