@@ -4,10 +4,22 @@
  */
 package farmacia_san_antonio;
 
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import conexión.ConexionBD;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,10 +30,12 @@ public class Venta extends javax.swing.JFrame {
     private ImageIcon imagen;
     private Icon icono;
     
+    ConexionBD con = new ConexionBD();
+    Connection cn = con.getConexion();
     public Venta() {
         initComponents();
         this.setLocationRelativeTo(this);
-        
+        configurarModeloTabla();
         this.pintarimagen(this.logo, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\logo.png");
         this.pintarimagen(this.busqueda, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\lupa.png");
     }
@@ -38,19 +52,19 @@ public class Venta extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        btncobro = new javax.swing.JButton();
+        buscar = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         logo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        contenido = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         busqueda = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        sumatotal = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,27 +85,39 @@ public class Venta extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton2.setBackground(new java.awt.Color(9, 118, 68));
-        jButton2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Cobrar");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 390, 100, 30));
-
-        jTextField1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField1.setText("Ingrese folio o nombre del producto");
-        jTextField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+        btncobro.setBackground(new java.awt.Color(9, 118, 68));
+        btncobro.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        btncobro.setForeground(new java.awt.Color(0, 0, 0));
+        btncobro.setText("Cobrar");
+        btncobro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btncobroMouseClicked(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 260, 30));
+        jPanel1.add(btncobro, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 390, 100, 30));
+
+        buscar.setBackground(new java.awt.Color(204, 204, 204));
+        buscar.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        buscar.setForeground(new java.awt.Color(0, 0, 0));
+        buscar.setText("Ingrese folio o nombre del producto");
+        buscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buscarMouseClicked(evt);
+            }
+        });
+        buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 260, 30));
+        buscar.getAccessibleContext().setAccessibleName("buscar producto");
 
         jButton1.setBackground(new java.awt.Color(9, 118, 68));
         jButton1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton1.setText("Buscar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, 110, 30));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 80, 110, 30));
 
         logo.setToolTipText("");
         logo.setAutoscrolls(true);
@@ -107,7 +133,7 @@ public class Venta extends javax.swing.JFrame {
         jLabel2.setText("FARMACIA SAN ANTONIO");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 460, 40));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        contenido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -137,7 +163,7 @@ public class Venta extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, true, false, false
@@ -151,7 +177,7 @@ public class Venta extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(contenido);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 840, 350));
 
@@ -177,17 +203,22 @@ public class Venta extends javax.swing.JFrame {
         jButton5.setBackground(new java.awt.Color(9, 118, 68));
         jButton5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton5.setText("Agregar");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 80, 110, 30));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 110, 30));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Total:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 490, 70, 30));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("$ 00.00");
-        jLabel3.setOpaque(true);
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 490, 80, 30));
+        sumatotal.setForeground(new java.awt.Color(0, 0, 0));
+        sumatotal.setText("$ 00.00");
+        sumatotal.setOpaque(true);
+        jPanel1.add(sumatotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 490, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,9 +242,55 @@ public class Venta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
+       String nombreProducto = buscar.getText().trim();
+        String sql = "SELECT id_producto, nombre, stock, precio FROM productos WHERE nombre LIKE ?";
+        
+        DefaultTableModel model = (DefaultTableModel) contenido.getModel(); // Usar modelo existente
+        
+        try (PreparedStatement pstmt = cn.prepareStatement(sql)) {
+            pstmt.setString(1, "%" + nombreProducto + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id_producto");
+                String nombre = rs.getString("nombre");
+                int cantidad = 1;
+                double precio = rs.getDouble("precio");
+                double total = cantidad * precio;
+                
+                // Evitar duplicados (opcional)
+                boolean existe = false;
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    if ((int) model.getValueAt(i, 0) == id) {
+                        existe = true;
+                        break;
+                    }
+                }
+                
+                if (!existe) {
+                    model.addRow(new Object[]{id, nombre, cantidad, precio, total});
+                }
+            }
+            
+            actualizarTotal(); // Actualizar total general
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buscarActionPerformed
+
+    private void buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscarMouseClicked
+        
+    }//GEN-LAST:event_buscarMouseClicked
+
+    private void btncobroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncobroMouseClicked
+        
+    }//GEN-LAST:event_btncobroMouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        busqueda.setText(" ");
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,23 +335,59 @@ public class Venta extends javax.swing.JFrame {
                     Image.SCALE_DEFAULT));
     lbl.setIcon(this.icono);
     }
+private void actualizarTotal() {
+    double sumaTotal = 0.0;
+        DefaultTableModel model = (DefaultTableModel) contenido.getModel();
+        
+        for (int i = 0; i < model.getRowCount(); i++) {
+            sumaTotal += Double.parseDouble(model.getValueAt(i, 4).toString());
+        }
+        
+        sumatotal.setText(String.format("$ %.2f", sumaTotal));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncobro;
+    private javax.swing.JTextField buscar;
     private javax.swing.JLabel busqueda;
+    private javax.swing.JTable contenido;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel logo;
+    private javax.swing.JLabel sumatotal;
     // End of variables declaration//GEN-END:variables
+
+    private void configurarModeloTabla() {
+         DefaultTableModel model = new DefaultTableModel(
+            new Object[]{"ID_FOLIO", "NOMBRE DE PRODUCTO", "CANTIDAD", "PRECIO", "TOTAL"}, 0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 2; // Solo editable la columna CANTIDAD
+            }
+        };
+        
+        contenido.setModel(model); // Asignar modelo a la tabla
+        
+        // 2. Listener para cambios en cantidad (solo una vez)
+        model.addTableModelListener(e -> {
+            if (e.getColumn() == 2) {
+                int row = e.getFirstRow();
+                int cantidad = Integer.parseInt(model.getValueAt(row, 2).toString());
+                double precio = Double.parseDouble(model.getValueAt(row, 3).toString());
+                double nuevoTotal = cantidad * precio;
+                
+                model.setValueAt(nuevoTotal, row, 4); // Actualizar total de la fila
+                actualizarTotal(); // Actualizar total general
+            }
+        });
+    }
 }
