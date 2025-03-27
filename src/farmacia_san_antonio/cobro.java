@@ -15,6 +15,7 @@ public class cobro extends javax.swing.JFrame {
      */
     public cobro() {
         initComponents();
+        this.setLocationRelativeTo(this);
     }
 
     /**
@@ -72,6 +73,11 @@ public class cobro extends javax.swing.JFrame {
         jPanel1.add(cambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 380, 50, 30));
 
         jButton1.setText("Cobrar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, 200, 30));
 
         jButton2.setText("Enviar");
@@ -115,6 +121,11 @@ public class cobro extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        Venta ven= new Venta();
+        ven.setVisible(true);
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
