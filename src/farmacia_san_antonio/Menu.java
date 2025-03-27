@@ -9,6 +9,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import login.RegistroUsuario;
 
 /**
  *
@@ -21,6 +22,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         this.setLocationRelativeTo(this);
+        
         this.pintarimagen(this.logo, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\logo.png");
         this.pintarimagenB(this.Producto, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\inventario.png");
         this.pintarimagenB(this.Grafica, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\graficos.png");
@@ -75,11 +77,28 @@ public class Menu extends javax.swing.JFrame {
 
         nose.setBackground(new java.awt.Color(255, 255, 255));
         nose.setForeground(new java.awt.Color(9, 118, 68));
+        nose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                noseMouseClicked(evt);
+            }
+        });
         jPanel1.add(nose, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 150, 130));
 
         logo.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 120, 80));
+
+        Producto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProductoMouseClicked(evt);
+            }
+        });
         jPanel1.add(Producto, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 170, 150, 130));
+
+        Grafica.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GraficaMouseClicked(evt);
+            }
+        });
         jPanel1.add(Grafica, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 170, 140, 130));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -99,6 +118,19 @@ public class Menu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void noseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_noseMouseClicked
+        RegistroUsuario ventanaRegistro = new RegistroUsuario(); // Crear instancia
+    ventanaRegistro.setVisible(true);
+    }//GEN-LAST:event_noseMouseClicked
+
+    private void ProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductoMouseClicked
+        
+    }//GEN-LAST:event_ProductoMouseClicked
+
+    private void GraficaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GraficaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GraficaMouseClicked
 
     /**
      * @param args the command line arguments

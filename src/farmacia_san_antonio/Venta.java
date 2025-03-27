@@ -94,7 +94,7 @@ public class Venta extends javax.swing.JFrame {
                 btncobroMouseClicked(evt);
             }
         });
-        jPanel1.add(btncobro, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 390, 100, 30));
+        jPanel1.add(btncobro, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 590, 100, 30));
 
         buscar.setBackground(new java.awt.Color(204, 204, 204));
         buscar.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -117,7 +117,7 @@ public class Venta extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(9, 118, 68));
         jButton1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton1.setText("Buscar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 80, 110, 30));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 80, 110, 30));
 
         logo.setToolTipText("");
         logo.setAutoscrolls(true);
@@ -133,6 +133,7 @@ public class Venta extends javax.swing.JFrame {
         jLabel2.setText("FARMACIA SAN ANTONIO");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 460, 40));
 
+        contenido.setBackground(new java.awt.Color(204, 204, 204));
         contenido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -177,9 +178,10 @@ public class Venta extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        contenido.setShowHorizontalLines(false);
         jScrollPane2.setViewportView(contenido);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 840, 350));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 1000, 450));
 
         jButton3.setBackground(new java.awt.Color(153, 255, 255));
         jButton3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -189,7 +191,7 @@ public class Venta extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 450, 110, 30));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 590, 110, 30));
 
         busqueda.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(busqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 40, 30));
@@ -198,40 +200,45 @@ public class Venta extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
         jButton4.setText("Eliminar");
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 160, 110, 30));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 260, 110, 30));
 
         jButton5.setBackground(new java.awt.Color(9, 118, 68));
         jButton5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton5.setText("Agregar");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 110, 30));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 110, 30));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Total:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 490, 70, 30));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 600, 70, 30));
 
         sumatotal.setForeground(new java.awt.Color(0, 0, 0));
         sumatotal.setText("$ 00.00");
         sumatotal.setOpaque(true);
-        jPanel1.add(sumatotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 490, 80, 30));
+        jPanel1.add(sumatotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 590, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1034, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -285,12 +292,18 @@ public class Venta extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarMouseClicked
 
     private void btncobroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncobroMouseClicked
-        
+        cobro cob= new cobro();
+        cob.setVisible(true);
     }//GEN-LAST:event_btncobroMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         busqueda.setText(" ");
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        Agregar can= new Agregar();
+        can.setVisible(true);
+    }//GEN-LAST:event_jButton5MouseClicked
 
     /**
      * @param args the command line arguments

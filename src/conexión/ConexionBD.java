@@ -33,13 +33,4 @@ public class ConexionBD {
         return conexion;
     }
 
-    // Método principal para probar la conexión
-    public static void main(String[] args) {
-        Connection conn = ConexionBD.getConexion();
-        if (conn != null) {
-            System.out.println("Conectado a la base de datos.");
-        } else {
-            System.out.println("Error en la conexión.");
-        }
-    }
 }
