@@ -62,7 +62,6 @@ public class Venta extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         busqueda = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         sumatotal = new javax.swing.JLabel();
 
@@ -81,7 +80,7 @@ public class Venta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -117,7 +116,7 @@ public class Venta extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(9, 118, 68));
         jButton1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton1.setText("Buscar");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 80, 110, 30));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 80, 110, 30));
 
         logo.setToolTipText("");
         logo.setAutoscrolls(true);
@@ -202,21 +201,6 @@ public class Venta extends javax.swing.JFrame {
         jButton4.setText("Eliminar");
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 260, 110, 30));
 
-        jButton5.setBackground(new java.awt.Color(9, 118, 68));
-        jButton5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jButton5.setText("Agregar");
-        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton5MouseClicked(evt);
-            }
-        });
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, 110, 30));
-
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Total:");
@@ -251,7 +235,7 @@ public class Venta extends javax.swing.JFrame {
 
     private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
        String nombreProducto = buscar.getText().trim();
-        String sql = "SELECT id_producto, nombre, stock, precio FROM productos WHERE nombre LIKE ?";
+        String sql = "SELECT codigo_barras, nombre, stock, precio FROM productos WHERE codigo_barras LIKE ?";
         
         DefaultTableModel model = (DefaultTableModel) contenido.getModel(); // Usar modelo existente
         
@@ -260,7 +244,7 @@ public class Venta extends javax.swing.JFrame {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                int id = rs.getInt("id_producto");
+                int id = rs.getInt("codigo_barras");
                 String nombre = rs.getString("nombre");
                 int cantidad = 1;
                 double precio = rs.getDouble("precio");
@@ -295,15 +279,6 @@ public class Venta extends javax.swing.JFrame {
         cobro cob= new cobro();
         cob.setVisible(true);
     }//GEN-LAST:event_btncobroMouseClicked
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        busqueda.setText(" ");
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
-        Agregar can= new Agregar();
-        can.setVisible(true);
-    }//GEN-LAST:event_jButton5MouseClicked
 
     /**
      * @param args the command line arguments
@@ -367,7 +342,6 @@ private void actualizarTotal() {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

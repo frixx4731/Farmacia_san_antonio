@@ -4,20 +4,33 @@
  */
 package farmacia_san_antonio;
 
+import java.awt.Image;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author frix4
  */
 public class cobro extends javax.swing.JFrame {
 
-    /**
-     * Creates new form cobro
-     */
+   private ImageIcon imagen;
+    private Icon icono;
     public cobro() {
         initComponents();
         this.setLocationRelativeTo(this);
+        this.pintarimagen(this.logo, "C:\\Users\\frix4\\Documentos\\NetBeansProjects\\Farmacia_san_antonio\\src\\imagenes\\logo.png");
     }
-
+private void pintarimagen(JLabel lbl, String ruta){
+    this.imagen = new ImageIcon(ruta);
+    this.icono = new ImageIcon(
+            this.imagen.getImage().getScaledInstance(
+                    lbl.getWidth(), 
+                    lbl.getHeight(), 
+                    Image.SCALE_DEFAULT));
+    lbl.setIcon(this.icono);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,19 +65,17 @@ public class cobro extends javax.swing.JFrame {
         jLabel2.setText("Total:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 290, 60, 30));
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(9, 118, 68));
         jLabel3.setText("Pago con tarjeta o efectivo");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 280, 40));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 300, 60));
 
         jRadioButton1.setText("Tarjeta de credito o debito");
         jPanel1.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, -1, -1));
 
         jRadioButton2.setText("Efectivo");
         jPanel1.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, -1, -1));
-
-        logo.setText("jLabel4");
-        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 6, 70, 50));
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 70));
 
         jLabel1.setText("Recibo:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, 50, 30));

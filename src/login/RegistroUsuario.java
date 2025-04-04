@@ -1,20 +1,17 @@
 package login;
 
 
+import conexión.Sqlusuario;
+import conexión.Usuario;
+import conexión.hash;
 import java.awt.Image;
+import static java.util.Objects.hash;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
-/**
- *
- * @author frix4
- */
 public class RegistroUsuario extends javax.swing.JFrame {
 
     private ImageIcon imagen;
@@ -52,103 +49,151 @@ public class RegistroUsuario extends javax.swing.JFrame {
         nombre = new javax.swing.JTextField();
         paterno = new javax.swing.JTextField();
         materno = new javax.swing.JTextField();
-        correo = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        contrasena = new javax.swing.JPasswordField();
+        user = new javax.swing.JTextField();
+        txtconficontraseña = new javax.swing.JPasswordField();
+        txtcontraseña = new javax.swing.JPasswordField();
         turno = new javax.swing.JComboBox<>();
         menu = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        correo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, 50));
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 70));
 
         usuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 310, 320));
+        jPanel1.add(usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 280, 300));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(9, 118, 68));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("NUEVO USUARIO");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 350, 50));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 350, 50));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel2.setText("NOMBRE COMPLETO:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, -1, -1));
 
         jLabel3.setText("APELLIDO PATERNO:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 150, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, -1, -1));
 
         jLabel4.setText("APELLIDO MATERNO:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 200, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 190, -1, -1));
 
         rol.setForeground(new java.awt.Color(0, 0, 0));
         rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VENDEDOR", "CAJERO", "AUXILIAR" }));
-        jPanel1.add(rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 420, -1, -1));
+        jPanel1.add(rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 300, 110, -1));
 
-        jLabel5.setText("CORREO:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, -1, -1));
+        jLabel5.setText("USUARIO:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, -1, -1));
 
         jLabel6.setText("CONTRASEÑA:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 300, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 340, -1, -1));
 
         jLabel7.setText("CONFIRMAR CONTRASEÑA:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 390, -1, -1));
 
         btnagregar.setBackground(new java.awt.Color(9, 118, 68));
         btnagregar.setText("AGREGAR");
-        jPanel1.add(btnagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 470, 140, 40));
+        btnagregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 470, 140, 40));
 
         jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setText("BORRAR");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 470, 80, 30));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 100, 40));
 
         nombre.setBackground(new java.awt.Color(255, 255, 255));
+        nombre.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         nombre.setForeground(new java.awt.Color(153, 153, 153));
         nombre.setText("Nombre completo");
-        jPanel1.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 120, 240, 30));
+        nombre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nombreMouseClicked(evt);
+            }
+        });
+        jPanel1.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, 240, 30));
 
         paterno.setBackground(new java.awt.Color(255, 255, 255));
         paterno.setForeground(new java.awt.Color(153, 153, 153));
         paterno.setText("Apellido paterno");
+        paterno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                paternoMouseClicked(evt);
+            }
+        });
         paterno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 paternoActionPerformed(evt);
             }
         });
-        jPanel1.add(paterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 240, 30));
+        jPanel1.add(paterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, 240, 30));
 
         materno.setBackground(new java.awt.Color(255, 255, 255));
         materno.setForeground(new java.awt.Color(153, 153, 153));
         materno.setText("Apellido materno");
-        jPanel1.add(materno, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 220, 240, 30));
+        materno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                maternoMouseClicked(evt);
+            }
+        });
+        jPanel1.add(materno, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 210, 240, 30));
+
+        user.setBackground(new java.awt.Color(255, 255, 255));
+        user.setForeground(new java.awt.Color(153, 153, 153));
+        user.setText("user1");
+        user.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userMouseClicked(evt);
+            }
+        });
+        jPanel1.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 310, 240, 30));
+
+        txtconficontraseña.setBackground(new java.awt.Color(255, 255, 255));
+        txtconficontraseña.setForeground(new java.awt.Color(0, 0, 0));
+        txtconficontraseña.setText("jPasswordField1");
+        jPanel1.add(txtconficontraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 240, 30));
+
+        txtcontraseña.setBackground(new java.awt.Color(255, 255, 255));
+        txtcontraseña.setForeground(new java.awt.Color(0, 0, 0));
+        txtcontraseña.setText("jPasswordField1");
+        txtcontraseña.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtcontraseñaMouseClicked(evt);
+            }
+        });
+        jPanel1.add(txtcontraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 360, 240, 30));
+
+        turno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Turno 1", "Turno 2" }));
+        jPanel1.add(turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 370, 110, 30));
+        jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 30, 30));
+
+        jLabel8.setText("CORREO:");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 240, -1, -1));
 
         correo.setBackground(new java.awt.Color(255, 255, 255));
         correo.setForeground(new java.awt.Color(153, 153, 153));
         correo.setText("ejemplo_sdf@gmail.com");
-        jPanel1.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 270, 240, 30));
-
-        jPasswordField1.setBackground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setForeground(new java.awt.Color(0, 0, 0));
-        jPasswordField1.setText("jPasswordField1");
-        jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 370, 240, 30));
-
-        contrasena.setBackground(new java.awt.Color(255, 255, 255));
-        contrasena.setForeground(new java.awt.Color(0, 0, 0));
-        contrasena.setText("jPasswordField1");
-        jPanel1.add(contrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 320, 240, 30));
-
-        turno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Turno 1", "Turno 2" }));
-        jPanel1.add(turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(512, 420, 90, 30));
-        jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 30, 30));
+        correo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                correoMouseClicked(evt);
+            }
+        });
+        jPanel1.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 260, 240, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 891, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,6 +207,65 @@ public class RegistroUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_paternoActionPerformed
 
+    private void nombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nombreMouseClicked
+        nombre.setText(" ");
+    }//GEN-LAST:event_nombreMouseClicked
+
+    private void paternoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paternoMouseClicked
+        paterno.setText(" ");
+    }//GEN-LAST:event_paternoMouseClicked
+
+    private void maternoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maternoMouseClicked
+        materno.setText(" ");
+    }//GEN-LAST:event_maternoMouseClicked
+
+    private void userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userMouseClicked
+        user.setText(" ");
+    }//GEN-LAST:event_userMouseClicked
+
+    private void txtcontraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtcontraseñaMouseClicked
+        txtcontraseña.setText(" ");
+    }//GEN-LAST:event_txtcontraseñaMouseClicked
+
+    private void correoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_correoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_correoMouseClicked
+
+    private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
+        Sqlusuario usu = new Sqlusuario();
+        Usuario mod = new Usuario();  
+        
+        String pass = new String(txtcontraseña.getPassword());
+        String conpass = new String(txtconficontraseña.getPassword());
+        if(pass.equals(conpass)){
+            String nuevopass= hash.sha1(pass);
+            mod.setNombreCompleto(nombre.getText());
+        mod.setApellidoPaterno(paterno.getText());
+        mod.setApellidoMaterno(materno.getText());
+        mod.setCorreo(correo.getText());
+        mod.setContrasenaHash(nuevopass);
+        mod.setRol(rol.getSelectedItem().toString());
+        mod.setTurno(turno.getSelectedItem().toString());
+        if(usu.registrar(mod)){
+            JOptionPane.showMessageDialog(null, "Usuario Creado con exito :9 ");
+        }else{
+            JOptionPane.showMessageDialog(null, "error ");
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "contraseña no coinciden    ");
+        } 
+        limpiarCampos();
+    }//GEN-LAST:event_btnagregarActionPerformed
+private void limpiarCampos() {
+    nombre.setText("");
+    paterno.setText("");
+    materno.setText("");
+    correo.setText("");
+    txtcontraseña.setText("");
+    txtconficontraseña.setText("");
+    rol.setSelectedIndex(0);
+    turno.setSelectedIndex(0);
+}
     /**
      * @param args the command line arguments
      */
@@ -208,7 +312,6 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnagregar;
-    private javax.swing.JPasswordField contrasena;
     private javax.swing.JTextField correo;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -218,8 +321,8 @@ public class RegistroUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JLabel logo;
     private javax.swing.JTextField materno;
     private javax.swing.JLabel menu;
@@ -227,6 +330,9 @@ public class RegistroUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField paterno;
     private javax.swing.JComboBox<String> rol;
     private javax.swing.JComboBox<String> turno;
+    private javax.swing.JPasswordField txtconficontraseña;
+    private javax.swing.JPasswordField txtcontraseña;
+    private javax.swing.JTextField user;
     private javax.swing.JLabel usuario;
     // End of variables declaration//GEN-END:variables
 }
