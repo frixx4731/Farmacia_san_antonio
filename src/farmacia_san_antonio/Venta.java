@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import java.awt.Image;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -80,7 +82,7 @@ public class Venta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -199,6 +201,11 @@ public class Venta extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(0, 0, 0));
         jButton4.setText("Eliminar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 260, 110, 30));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
@@ -234,51 +241,94 @@ public class Venta extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
-       String nombreProducto = buscar.getText().trim();
-        String sql = "SELECT codigo_barras, nombre, stock, precio FROM productos WHERE codigo_barras LIKE ?";
-        
-        DefaultTableModel model = (DefaultTableModel) contenido.getModel(); // Usar modelo existente
-        
-        try (PreparedStatement pstmt = cn.prepareStatement(sql)) {
-            pstmt.setString(1, "%" + nombreProducto + "%");
-            ResultSet rs = pstmt.executeQuery();
+        String criterio = buscar.getText().trim();
+    
+    // Validar criterio de búsqueda
+    if (criterio.isEmpty()) {
+        JOptionPane.showMessageDialog(this, 
+            "Ingrese un nombre o código de barras", 
+            "Búsqueda vacía", 
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-            while (rs.next()) {
-                int id = rs.getInt("codigo_barras");
-                String nombre = rs.getString("nombre");
-                int cantidad = 1;
-                double precio = rs.getDouble("precio");
-                double total = cantidad * precio;
-                
-                // Evitar duplicados (opcional)
-                boolean existe = false;
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    if ((int) model.getValueAt(i, 0) == id) {
-                        existe = true;
-                        break;
-                    }
-                }
-                
-                if (!existe) {
-                    model.addRow(new Object[]{id, nombre, cantidad, precio, total});
-                }
+    // Consulta que busca por nombre o código de barras
+    String sql = "SELECT id_producto, nombre, stock, precio, codigo_barras "
+               + "FROM productos WHERE nombre LIKE ? OR codigo_barras = ?";
+    
+    DefaultTableModel model = (DefaultTableModel) contenido.getModel();
+    Set<Integer> productosAgregados = new HashSet<>(); // Evitar duplicados
+
+    try (PreparedStatement pstmt = cn.prepareStatement(sql)) {
+        pstmt.setString(1, "%" + criterio + "%"); // Búsqueda por nombre
+        pstmt.setString(2, criterio); // Búsqueda exacta por código
+
+        ResultSet rs = pstmt.executeQuery();
+        double sumaTotal = 0.0;
+
+        while (rs.next()) {
+            int id = rs.getInt("id_producto");
+            
+            // Validar si el producto ya está en la tabla
+            if (productosAgregados.contains(id)) continue;
+            productosAgregados.add(id);
+
+            String nombre = rs.getString("nombre");
+            int stock = rs.getInt("stock");
+            double precio = rs.getDouble("precio");
+            String codigoBarras = rs.getString("codigo_barras");
+
+            // Validar stock
+            if (stock <= 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Producto '" + nombre + "' sin stock",
+                    "Stock agotado",
+                    JOptionPane.WARNING_MESSAGE);
+                continue;
             }
+
+            // Agregar fila al modelo existente
+            model.addRow(new Object[]{
+                id,
+                nombre,
+                1, // Cantidad inicial
+                precio,
+                precio // Total = cantidad * precio
+            });
             
-            actualizarTotal(); // Actualizar total general
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            actualizarTotal();
         }
+
+        
+
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this,
+                "No se encontraron productos",
+                "Sin resultados",
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this,
+            "Error en búsqueda: " + e.getMessage(),
+            "Error de BD",
+            JOptionPane.ERROR_MESSAGE);
+    }
+    buscar.setText("");
     }//GEN-LAST:event_buscarActionPerformed
 
     private void buscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscarMouseClicked
-        
+        buscar.setText(" ");
     }//GEN-LAST:event_buscarMouseClicked
 
     private void btncobroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncobroMouseClicked
         cobro cob= new cobro();
         cob.setVisible(true);
     }//GEN-LAST:event_btncobroMouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        eliminarFilasSeleccionadas();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,6 +383,36 @@ private void actualizarTotal() {
         
         sumatotal.setText(String.format("$ %.2f", sumaTotal));
     }
+private void eliminarFilasSeleccionadas() {
+    int[] filasSeleccionadas = contenido.getSelectedRows();
+    
+    if (filasSeleccionadas.length > 0) {
+        int opcion = JOptionPane.showConfirmDialog(
+            this, 
+            "¿Eliminar " + filasSeleccionadas.length + " productos?", 
+            "Confirmación", 
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (opcion == JOptionPane.YES_OPTION) {
+            DefaultTableModel model = (DefaultTableModel) contenido.getModel();
+            
+            // Eliminar en orden inverso para evitar desfases
+            for (int i = filasSeleccionadas.length - 1; i >= 0; i--) {
+                model.removeRow(filasSeleccionadas[i]);
+            }
+            
+            actualizarTotal();
+        }
+    } else {
+        JOptionPane.showMessageDialog(
+            this, 
+            "Seleccione al menos una fila", 
+            "Advertencia", 
+            JOptionPane.WARNING_MESSAGE
+        );
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncobro;

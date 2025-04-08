@@ -11,11 +11,20 @@ public class Usuario {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correo;
+    private String user;
     private String rol; // ENUM: vendedor, auxiliar, cajero
     private String turno; // ENUM: turno 1, turno 2
     private String contrasenaHash;
     private LocalDateTime fechaRegistro;
     private boolean activo;
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 
     public int getIdUsuario() {
         return idUsuario;

@@ -5,7 +5,10 @@ import conexión.Sqlusuario;
 import conexión.Usuario;
 import conexión.hash;
 import java.awt.Image;
+import java.sql.SQLException;
 import static java.util.Objects.hash;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -45,7 +48,7 @@ public class RegistroUsuario extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnagregar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnlimpiar = new javax.swing.JButton();
         nombre = new javax.swing.JTextField();
         paterno = new javax.swing.JTextField();
         materno = new javax.swing.JTextField();
@@ -59,11 +62,13 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 70));
 
+        usuario.setBackground(new java.awt.Color(204, 204, 204));
         usuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 280, 300));
 
@@ -71,7 +76,7 @@ public class RegistroUsuario extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(9, 118, 68));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("NUEVO USUARIO");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 350, 50));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 20, 350, 50));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel2.setText("NOMBRE COMPLETO:");
@@ -85,7 +90,7 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         rol.setForeground(new java.awt.Color(0, 0, 0));
         rol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VENDEDOR", "CAJERO", "AUXILIAR" }));
-        jPanel1.add(rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 300, 110, -1));
+        jPanel1.add(rol, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 110, -1));
 
         jLabel5.setText("USUARIO:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, -1, -1));
@@ -103,26 +108,34 @@ public class RegistroUsuario extends javax.swing.JFrame {
                 btnagregarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 470, 140, 40));
+        jPanel1.add(btnagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 460, 140, 40));
 
-        jButton2.setBackground(new java.awt.Color(255, 0, 0));
-        jButton2.setText("BORRAR");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 460, 100, 40));
+        btnlimpiar.setBackground(new java.awt.Color(255, 0, 0));
+        btnlimpiar.setText("LIMPIAR");
+        btnlimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlimpiarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnlimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 460, 100, 40));
 
         nombre.setBackground(new java.awt.Color(255, 255, 255));
         nombre.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         nombre.setForeground(new java.awt.Color(153, 153, 153));
-        nombre.setText("Nombre completo");
         nombre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 nombreMouseClicked(evt);
+            }
+        });
+        nombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nombreActionPerformed(evt);
             }
         });
         jPanel1.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, 240, 30));
 
         paterno.setBackground(new java.awt.Color(255, 255, 255));
         paterno.setForeground(new java.awt.Color(153, 153, 153));
-        paterno.setText("Apellido paterno");
         paterno.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 paternoMouseClicked(evt);
@@ -137,7 +150,6 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         materno.setBackground(new java.awt.Color(255, 255, 255));
         materno.setForeground(new java.awt.Color(153, 153, 153));
-        materno.setText("Apellido materno");
         materno.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 maternoMouseClicked(evt);
@@ -147,7 +159,6 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         user.setBackground(new java.awt.Color(255, 255, 255));
         user.setForeground(new java.awt.Color(153, 153, 153));
-        user.setText("user1");
         user.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 userMouseClicked(evt);
@@ -157,12 +168,15 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         txtconficontraseña.setBackground(new java.awt.Color(255, 255, 255));
         txtconficontraseña.setForeground(new java.awt.Color(0, 0, 0));
-        txtconficontraseña.setText("jPasswordField1");
+        txtconficontraseña.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtconficontraseñaMouseClicked(evt);
+            }
+        });
         jPanel1.add(txtconficontraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 410, 240, 30));
 
         txtcontraseña.setBackground(new java.awt.Color(255, 255, 255));
         txtcontraseña.setForeground(new java.awt.Color(0, 0, 0));
-        txtcontraseña.setText("jPasswordField1");
         txtcontraseña.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtcontraseñaMouseClicked(evt);
@@ -170,8 +184,9 @@ public class RegistroUsuario extends javax.swing.JFrame {
         });
         jPanel1.add(txtcontraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 360, 240, 30));
 
+        turno.setForeground(new java.awt.Color(0, 0, 0));
         turno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Turno 1", "Turno 2" }));
-        jPanel1.add(turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 370, 110, 30));
+        jPanel1.add(turno, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 270, 110, 30));
         jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 30, 30));
 
         jLabel8.setText("CORREO:");
@@ -179,10 +194,14 @@ public class RegistroUsuario extends javax.swing.JFrame {
 
         correo.setBackground(new java.awt.Color(255, 255, 255));
         correo.setForeground(new java.awt.Color(153, 153, 153));
-        correo.setText("ejemplo_sdf@gmail.com");
         correo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 correoMouseClicked(evt);
+            }
+        });
+        correo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                correoActionPerformed(evt);
             }
         });
         jPanel1.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 260, 240, 30));
@@ -228,39 +247,116 @@ public class RegistroUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcontraseñaMouseClicked
 
     private void correoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_correoMouseClicked
-        // TODO add your handling code here:
+        correo.setText(" ");
     }//GEN-LAST:event_correoMouseClicked
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         Sqlusuario usu = new Sqlusuario();
-        Usuario mod = new Usuario();  
+    Usuario mod = new Usuario();  
+    
+    String pass = new String(txtcontraseña.getPassword());
+    String conpass = new String(txtconficontraseña.getPassword());
+    
+    // 1. Validar campos vacíos
+    if (nombre.getText().trim().isEmpty() 
+        || paterno.getText().trim().isEmpty() 
+        || correo.getText().trim().isEmpty() 
+        || user.getText().trim().isEmpty() 
+        || pass.isEmpty()) {
         
-        String pass = new String(txtcontraseña.getPassword());
-        String conpass = new String(txtconficontraseña.getPassword());
+        JOptionPane.showMessageDialog(null, 
+            "Complete todos los campos obligatorios (*)", 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // 2. Validar formato de correo
+    if (!correo.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        JOptionPane.showMessageDialog(null, 
+            "Formato de correo inválido", 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // 3. Validar coincidencia de contraseñas
+    if (!pass.equals(conpass)) {
+        JOptionPane.showMessageDialog(null, 
+            "Las contraseñas no coinciden", 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    try {
+        // 4. Verificar si el usuario ya existe
+        if (usu.existeUsuario(user.getText().trim())) {
+            JOptionPane.showMessageDialog(null, 
+                "El nombre de usuario ya está registrado", 
+                "Error", 
+                JOptionPane.WARNING_MESSAGE);
+            limpiarCampos();
+            return;
+        }
+        
         if(pass.equals(conpass)){
             String nuevopass= hash.sha1(pass);
-            mod.setNombreCompleto(nombre.getText());
-        mod.setApellidoPaterno(paterno.getText());
-        mod.setApellidoMaterno(materno.getText());
-        mod.setCorreo(correo.getText());
+        
+        mod.setNombreCompleto(nombre.getText().trim());
+        mod.setApellidoPaterno(paterno.getText().trim());
+        mod.setApellidoMaterno(materno.getText().trim());
+        mod.setCorreo(correo.getText().trim());
+        mod.setUser(user.getText().trim());
         mod.setContrasenaHash(nuevopass);
         mod.setRol(rol.getSelectedItem().toString());
         mod.setTurno(turno.getSelectedItem().toString());
-        if(usu.registrar(mod)){
-            JOptionPane.showMessageDialog(null, "Usuario Creado con exito :9 ");
-        }else{
-            JOptionPane.showMessageDialog(null, "error ");
+        
+        // 6. Registrar en la base de datos
+        if (usu.registrar(mod)) {
+            JOptionPane.showMessageDialog(null, 
+                "Usuario creado exitosamente", 
+                "Éxito", 
+                JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "Error al registrar el usuario", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
-        }else{
-            JOptionPane.showMessageDialog(null, "contraseña no coinciden    ");
-        } 
-        limpiarCampos();
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, 
+            "Error de base de datos: " + ex.getMessage(), 
+            "Error crítico", 
+            JOptionPane.ERROR_MESSAGE);
+        Logger.getLogger(RegistroUsuario.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        
     }//GEN-LAST:event_btnagregarActionPerformed
+
+    private void btnlimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlimpiarActionPerformed
+        limpiarCampos();
+    }//GEN-LAST:event_btnlimpiarActionPerformed
+
+    private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
+
+    }//GEN-LAST:event_correoActionPerformed
+
+    private void txtconficontraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtconficontraseñaMouseClicked
+       txtconficontraseña.setText(" ");
+    }//GEN-LAST:event_txtconficontraseñaMouseClicked
+
+    private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombreActionPerformed
 private void limpiarCampos() {
     nombre.setText("");
     paterno.setText("");
     materno.setText("");
     correo.setText("");
+    user.setText("");
     txtcontraseña.setText("");
     txtconficontraseña.setText("");
     rol.setSelectedIndex(0);
@@ -312,8 +408,8 @@ private void limpiarCampos() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnagregar;
+    private javax.swing.JButton btnlimpiar;
     private javax.swing.JTextField correo;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

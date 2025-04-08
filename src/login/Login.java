@@ -6,6 +6,7 @@ package login;
  */
 
 
+import farmacia_san_antonio.Venta;
 import java.awt.Color;
 
 /**
@@ -63,6 +64,11 @@ public class Login extends javax.swing.JFrame {
         BTNINICIAR.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         BTNINICIAR.setForeground(new java.awt.Color(255, 255, 255));
         BTNINICIAR.setText("INICIAR");
+        BTNINICIAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNINICIARActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -157,6 +163,11 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BTNINICIARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNINICIARActionPerformed
+        Venta reg = new Venta();
+        reg.setVisible(true);
+    }//GEN-LAST:event_BTNINICIARActionPerformed
 
     /**
      * @param args the command line arguments
